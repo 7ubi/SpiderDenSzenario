@@ -1,17 +1,29 @@
 class Spider{
-  PVector pos = new PVector(random(width/1.5), random(height / 2));
-  PVector dir = new PVector(random(1), random(1));
+  PVector pos = new PVector(0, 0);
+  PVector dir = new PVector(0, 0);
+  float angle = random(-PI, PI);
+  
+  float speed = 3;
+  
+  Spider(){
+    boolean notHit = false;
+    
+    while(!notHit){
+      pos = new PVector(random(width), random(height));
+      notHit = !player.hitPlayer(pos, spiderImg.width * 2, spiderImg.height * 2);
+    }
+  }
   
   void update(){
-    dir.x += random(-1, 1);
-    dir.y += random(-1, 1);
-    dir.normalize();
+    angle += random(-0.2, 0.2);
+    dir = PVector.fromAngle(angle).mult(speed);
     
     pos.add(dir);
-    
     pos.x = constrain(pos.x, spiderImg.width/2, width - spiderImg.width/2);
     pos.y = constrain(pos.y, spiderImg.height/2, height - spiderImg.height/2);
-    
+    if(pos.x == spiderImg.width/2 || pos.x == width - spiderImg.width/2 || pos.y == spiderImg.height/2 || pos.y == height - spiderImg.height/2){
+      angle += PI;
+    }
     hitPlayer();
   }
   

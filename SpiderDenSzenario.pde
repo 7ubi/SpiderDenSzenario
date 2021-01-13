@@ -8,7 +8,7 @@ PImage spiderImg;
 PImage gunImg;
 PImage bulletImg;
 
-int winScore = 50;
+int winScore = 300;
 boolean alive = true;
 boolean won = true;
 
@@ -30,6 +30,7 @@ void setup() {
   player = new Player();
 
   imageMode(CENTER);
+  frameRate(300);
 }
 
 void reset(){
@@ -60,7 +61,7 @@ void draw() {
     if (random(100) < 1) {
       coins.add(new Coin());
     }
-    if (random(1000) < 1) {
+    if (random(100) < 1) {
       spiders.add(new Spider());
     }
 

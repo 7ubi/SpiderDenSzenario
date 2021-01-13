@@ -1,7 +1,7 @@
 class Player {
   PVector pos = new PVector(width/2, height/1.5);
   PVector dir = new PVector(0.5, 0.5);
-  float speed = 1;
+  float speed = 2;
 
   Gun gun = new Gun();
 
@@ -20,10 +20,10 @@ class Player {
   ArrayList<PVector> spidersInRange;
 
   int time = 0;
-  int coolDown = 10;
+  int coolDown = 1;
 
   Player() {
-    for (int x = int(fov/2); x < width; x += fov) {
+    for (int x = int(fov/2); x < width - playerImg.width/2; x += fov) {
       searchPositions.add(new PVector(x, fov/2));
       searchPositions.add(new PVector(x, height-fov/2));
     }
@@ -42,7 +42,14 @@ class Player {
 
       break;
     case 1:
-      gun.getAngle(getClosest(spidersInRange));
+      PVector s = getClosest(spidersInRange);
+      gun.getAngle(s);
+      
+      float angle = atan((pos.y - s.y) / (pos.x - s.x));
+      if(pos.x - s.x > 0){
+        angle += PI;
+      }
+      dir = PVector.fromAngle(angle + PI).mult(speed);
       state = 2;
       break;
     case 2:
@@ -51,7 +58,7 @@ class Player {
         gun.shoot();
       }
       time++;
-      state = 3;
+      state = 0;
       break;
     case 3:
       searchCoin();
@@ -131,8 +138,8 @@ class Player {
 
     pos.add(dir);
 
-    pos.x = constrain(pos.x, 0, width - 38);
-    pos.y = constrain(pos.y, 0, height - 75);
+    pos.x = constrain(pos.x, 0, width - playerImg.width/2);
+    pos.y = constrain(pos.y, 0, height - playerImg.height/2);
   }
 
   void show() {
