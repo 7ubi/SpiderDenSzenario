@@ -13,7 +13,7 @@ boolean alive = true;
 boolean won = true;
 
 void setup() {
-  size(1000, 800);
+  size(500, 500);
 
   coinImg = loadImage("coin.png");
   playerImg = loadImage("player.png");
@@ -30,7 +30,7 @@ void setup() {
   player = new Player();
 
   imageMode(CENTER);
-  frameRate(300);
+  frameRate(500);
 }
 
 void reset(){
@@ -98,6 +98,7 @@ void draw() {
     player.stateSelection();
     player.update();
     player.show();
+    text("" + round(frameRate) + "fps", 0, height - 10);
   }
 }
 

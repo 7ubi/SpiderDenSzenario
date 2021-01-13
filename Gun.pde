@@ -20,8 +20,6 @@ class Gun{
   }
   
   void show(){
-    //getAngle(new PVector(mouseX, mouseY));
-    //println(bullets.size());
     for(Bullet b: bullets){
       b.update();
       b.show();

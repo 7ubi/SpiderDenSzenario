@@ -1,7 +1,7 @@
 class Bullet{
   PVector pos;
   float angle;
-  float speed = 4;
+  float speed = 8;
   
   Bullet(PVector pos, float angle){
     this.pos = pos;

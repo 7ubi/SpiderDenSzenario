@@ -5,13 +5,11 @@ class Player {
 
   Gun gun = new Gun();
 
+  float w = playerImg.width;
+  float h = playerImg.height;
   float fov = 150;
-
   int state = 0;
   int searchIndex = 0;
-
-  int w = 38;
-  int h = 75;
 
   int score = 0;
 
@@ -20,12 +18,12 @@ class Player {
   ArrayList<PVector> spidersInRange;
 
   int time = 0;
-  int coolDown = 1;
+  int coolDown = 1; // can not equal 0
 
   Player() {
-    for (int x = int(fov/2); x < width - playerImg.width/2; x += fov) {
+    for (int x = int(fov/2); x <= width - fov/2; x += fov * 2) {
       searchPositions.add(new PVector(x, fov/2));
-      searchPositions.add(new PVector(x, height-fov/2));
+      searchPositions.add(new PVector(x, height - fov/2));
     }
   }
 
@@ -39,7 +37,6 @@ class Player {
         state = 3;
         time = 0;
       }
-
       break;
     case 1:
       PVector s = getClosest(spidersInRange);
@@ -59,7 +56,9 @@ class Player {
       }
       time++;
       state = 0;
-      break;
+      
+      
+      return;
     case 3:
       searchCoin();
       if (coinsInRange.size() > 0) {
@@ -73,14 +72,10 @@ class Player {
       state = 0;
       break;
     case 5:
+      turnTowards(searchPositions.get(searchIndex));
       state = 6;
       break;
     case 6:
-      turnTowards(searchPositions.get(searchIndex));
-
-      state = 7;
-      break;
-    case 7:
       if (dist(pos.x, pos.y, searchPositions.get(searchIndex).x, searchPositions.get(searchIndex).y) < 3) {
         searchIndex = (searchIndex + 1) % searchPositions.size();
       }
@@ -112,9 +107,7 @@ class Player {
   void turnTowards(PVector p) {
     PVector po = new PVector(p.x, p.y);
     dir = po.sub(pos);
-    dir.normalize();
-    dir.x *= speed;
-    dir.y *= speed;
+    dir.normalize().mult(speed);
   }
 
   PVector getClosest(ArrayList<PVector> list) {
@@ -133,8 +126,7 @@ class Player {
   }
 
   void update() {
-    gun.update(pos);
-    gun.show();
+    
 
     pos.add(dir);
 
@@ -143,6 +135,8 @@ class Player {
   }
 
   void show() {
+    gun.update(pos);
+    gun.show();
     noFill();
     stroke(255);
     circle(pos.x, pos.y, fov*2);
