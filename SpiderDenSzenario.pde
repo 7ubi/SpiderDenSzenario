@@ -13,7 +13,7 @@ boolean alive = true;
 boolean won = true;
 
 void setup() {
-  size(500, 500);
+  size(800, 500);
 
   coinImg = loadImage("coin.png");
   playerImg = loadImage("player.png");

@@ -1,7 +1,7 @@
 class Player {
   PVector pos = new PVector(width/2, height/1.5);
   PVector dir = new PVector(0.5, 0.5);
-  float speed = 2;
+  float speed = 3;
 
   Gun gun = new Gun();
 
