@@ -30,10 +30,10 @@ void setup() {
   player = new Player();
 
   imageMode(CENTER);
-  frameRate(500);
+  //frameRate(500); //speeds up game
 }
 
-void reset(){
+void reset() {
   alive = true;
   coins = new ArrayList<Coin>();
   spiders = new ArrayList<Spider>();
@@ -96,7 +96,10 @@ void draw() {
     }
 
     player.stateSelection();
-    player.update();
+    //player.update();
+    while (player.state != 0) {
+      player.stateSelection();
+    }
     player.show();
     text("" + round(frameRate) + "fps", 0, height - 10);
   }

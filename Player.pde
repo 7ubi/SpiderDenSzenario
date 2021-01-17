@@ -1,4 +1,4 @@
-class Player {
+class Player { //<>//
   PVector pos = new PVector(width/2, height/1.5);
   PVector dir = new PVector(0.5, 0.5);
   float speed = 3;
@@ -17,8 +17,7 @@ class Player {
   ArrayList<PVector> searchPositions = new ArrayList<PVector>();
   ArrayList<PVector> spidersInRange;
 
-  int time = 0;
-  int coolDown = 1; // can not equal 0
+  int coolDown = 4; // can not equal 0
 
   Player() {
     for (int x = int(fov/2); x <= width - fov/2; x += fov * 2) {
@@ -35,30 +34,30 @@ class Player {
         state = 1;
       } else {
         state = 3;
-        time = 0;
       }
+
       break;
+
     case 1:
       PVector s = getClosest(spidersInRange);
       gun.getAngle(s);
-      
+
       float angle = atan((pos.y - s.y) / (pos.x - s.x));
-      if(pos.x - s.x > 0){
+      if (pos.x - s.x > 0) {
         angle += PI;
       }
       dir = PVector.fromAngle(angle + PI).mult(speed);
+      update();
       state = 2;
       break;
+      
     case 2:
-
-      if (time % coolDown == 0) {
+      if (frameCount % coolDown == 0) {
         gun.shoot();
       }
-      time++;
-      state = 0;
+      state = 0;  
+      break;
       
-      
-      return;
     case 3:
       searchCoin();
       if (coinsInRange.size() > 0) {
@@ -69,12 +68,16 @@ class Player {
       break;
     case 4:
       turnTowards(getClosest(coinsInRange));
+      update();
       state = 0;
       break;
+      
     case 5:
       turnTowards(searchPositions.get(searchIndex));
       state = 6;
+      update();
       break;
+      
     case 6:
       if (dist(pos.x, pos.y, searchPositions.get(searchIndex).x, searchPositions.get(searchIndex).y) < 3) {
         searchIndex = (searchIndex + 1) % searchPositions.size();
@@ -126,8 +129,6 @@ class Player {
   }
 
   void update() {
-    
-
     pos.add(dir);
 
     pos.x = constrain(pos.x, 0, width - playerImg.width/2);
@@ -139,7 +140,7 @@ class Player {
     gun.show();
     noFill();
     stroke(255);
-    circle(pos.x, pos.y, fov*2);
+    //circle(pos.x, pos.y, fov*2); //shows fov
 
     image(playerImg, pos.x, pos.y);
 
